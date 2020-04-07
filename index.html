@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="style.css">
+    <title>Document</title>
+    <script type="text/javascript">
+        // function checkForm(){
+        //     var pass1 = document.forms["myForm"]["password"].value;
+        //     var pass2 = document.forms["myForm"]["password2"].value;
+        //     if(document.forms["myForm"]["fullname"].value == ""){
+        //         alert("Name required");
+        //         return false;
+        //     }else if(pass1 !== pass2){
+        //         alert("Password not match");
+        //         return false;
+        //     }else if(pass1 == "" || pass2 == ""){
+        //         alert("Please fill in password");
+        //         return false;
+        //     }else{
+        //         alert("OK True");
+        //         return true;
+        //     }
+        // }
+        $(function(){
+            $("#fullname_err").hide();
+            $("#password_err").hide();
+            $("#repassword_err").hide();
+
+            var fullname_err = false;
+            var password_err = false;
+            var repassword_err = false;
+
+            $("#fullname").focusout(function(){
+                checkFullName();
+            });
+
+            $("#password").focusout(function(){
+                checkPassword();
+            });
+
+            $("#password2").focusout(function(){
+                checkRePassword();
+            })
+
+            function checkFullName(){
+                var pattern = /^[a-zA-Z]*$/;
+                var fullName = $("fullname").val();
+                if(pattern.test(fullName) && fullName !== ''){
+                    $("#fullname_err").hide();
+                    $("#fullname").css("border_bottom", "2px solid #34F458");
+                }else{
+                    $("#fullname_err").html("Should only contain character");
+                    $("#fullname_err").show();
+                    $("#fullname").css("border-bottom", "2px solid #F90A0A");
+                    fullname_err = true;
+                }
+            }
+
+            function checkPassword(){
+                var password = $("#password").val().length;
+                if(password < 8){
+                    $("#password_err").html("Should more than 8");
+                    $("#password_err").show();
+                    $("#passowrd").css("border-bottom","2px solid #F90A0A");
+                    password_err = true;
+                }else{
+                    $("#password_err").hide();
+                    $("#password").css("border_bottom", "2px solid #34F458");
+                }
+            }
+
+            function checkRePassword(){
+                var password1 = $("#passowrd").val();
+                var password2 = $("#password2").val();
+                if(password1 !== password2){
+                    $("#repassword_err").html("Password not match");
+                    $("#repassword_err").show();
+                    $("#password2").css("border-bottom","2px solid #F90A0A");
+                    repassword_err = true;
+                }else{
+                    $("#repassword_err").hide();
+                    $("#password2").css("border_bottom", "2px solid #34F458");
+                }
+            }
+
+            $("#myForm").submit(function(){
+                fullname_err = false;
+                password_err = false;
+                repassword_err = false;
+
+                checkFullName();
+                checkPassword();
+                checkRePassword();
+
+                if(fullname_err === false && password_err === false && repassword_err === false){
+                    alert("Registration Successful!");
+                    return true;
+                }else{
+                    alert("Please fill form correctly");
+                    return false;
+                }
+            });
+
+        });
+        
+    </script>
+</head>
+<body>
+    <div class="box">
+       <h2>Form Validation</h2>
+        <form name="myForm" onsubmit="return checkForm()">
+            <div>
+                <input type="text" name="fullname" id="fullname" required="">
+                <span class="err_form" id="fullname_err"></span>
+                <label for="fullname">Full Name</label>
+            </div>
+            <div>
+                <input type="text" name="email" id="email" required="">
+                <span class="err_form" id="email_err"></span>
+                <label for="email">Email</label>
+            </div>
+            <div>
+                <input type="password" name="password" id="password" required="">
+                <span class="err_form" id="password_err"></span>
+                <label for="password">Password</label>
+            </div>
+            <div>
+                <input type="password" name="password2" id="password2" required="">
+                <span class="err_form" id="repassword_err"></span>
+                <label for="password2">Re-Password</label>
+            </div>
+            <input type="submit" value="Submit">
+        </form> 
+    </div>
+    
+</body>
+</html>
