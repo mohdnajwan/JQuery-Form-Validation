@@ -26,15 +26,21 @@
         // }
         $(function(){
             $("#fullname_err").hide();
+            $("#email_err").hide();
             $("#password_err").hide();
             $("#repassword_err").hide();
 
             var fullname_err = false;
+            var email_err = false;
             var password_err = false;
             var repassword_err = false;
 
             $("#fullname").focusout(function(){
                 checkFullName();
+            });
+
+            $("#email").focusout(function(){
+                checkEmail();
             });
 
             $("#password").focusout(function(){
@@ -47,10 +53,10 @@
 
             function checkFullName(){
                 var pattern = /^[a-zA-Z]*$/;
-                var fullName = $("fullname").val();
+                var fullName = $("#fullname").val();
                 if(pattern.test(fullName) && fullName !== ''){
                     $("#fullname_err").hide();
-                    $("#fullname").css("border_bottom", "2px solid #34F458");
+                    $("#fullname").css("border-bottom", "2px solid #34F458");
                 }else{
                     $("#fullname_err").html("Should only contain character");
                     $("#fullname_err").show();
@@ -59,21 +65,35 @@
                 }
             }
 
+            function checkEmail(){
+                var pattern = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                var email = $("#email").val();
+                if(pattern.test(email) && email !== ''){
+                    $("#email_err").hide();
+                    $("#email").css("border-bottom", "2px solid #34F458");
+                }else{
+                    $("#email_err").html("Email not valid!");
+                    $("#email_err").show();
+                    $("#email").css("border-bottom","2px solid #F90A0A");
+                    email_err = true;
+                }
+            }
+
             function checkPassword(){
                 var password = $("#password").val().length;
                 if(password < 8){
                     $("#password_err").html("Should more than 8");
                     $("#password_err").show();
-                    $("#passowrd").css("border-bottom","2px solid #F90A0A");
+                    $("#password").css("border-bottom","2px solid #F90A0A");
                     password_err = true;
                 }else{
                     $("#password_err").hide();
-                    $("#password").css("border_bottom", "2px solid #34F458");
+                    $("#password").css("border-bottom", "2px solid #34F458");
                 }
             }
 
             function checkRePassword(){
-                var password1 = $("#passowrd").val();
+                var password1 = $("#password").val();
                 var password2 = $("#password2").val();
                 if(password1 !== password2){
                     $("#repassword_err").html("Password not match");
@@ -82,20 +102,22 @@
                     repassword_err = true;
                 }else{
                     $("#repassword_err").hide();
-                    $("#password2").css("border_bottom", "2px solid #34F458");
+                    $("#password2").css("border-bottom", "2px solid #34F458");
                 }
             }
 
             $("#myForm").submit(function(){
                 fullname_err = false;
+                email_err = false;
                 password_err = false;
                 repassword_err = false;
 
                 checkFullName();
+                checkEmail();
                 checkPassword();
                 checkRePassword();
 
-                if(fullname_err === false && password_err === false && repassword_err === false){
+                if(fullname_err === false && email_err === false && password_err === false && repassword_err === false){
                     alert("Registration Successful!");
                     return true;
                 }else{
